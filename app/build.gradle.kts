@@ -58,4 +58,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.androidx.constraintlayout.compose)
+
+
+
+    implementation(libs.androidx.navigation.compose)
 }

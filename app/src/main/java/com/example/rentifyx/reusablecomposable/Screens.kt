@@ -15,13 +15,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.example.rentifyx.ui.theme.RentifyXTheme
-import com.example.rentifyx.ui.theme.WelcomeScreenColor
+import com.example.rentifyx.ui.theme.backgroundColor
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun BaseScreen(
@@ -34,11 +36,21 @@ fun BaseScreen(
     dividerColor: Color?,
     content: @Composable (PaddingValues) -> Unit
 ) {
+    val systemUiController = rememberSystemUiController()
+
+    LaunchedEffect(Unit) {
+        systemUiController.setStatusBarColor(
+            color = backgroundColor, darkIcons = true
+        )
+        systemUiController.setNavigationBarColor(
+            color = backgroundColor, darkIcons = true, navigationBarContrastEnforced = false
+        )
+    }
     RentifyXTheme {
         Scaffold(
             topBar = {
                 if (isAppBarNeeded) {
-                    CustomToolbar(toolbarTitleText, navigationIcon, navigationOnClick,dividerColor)
+                    CustomToolbar(toolbarTitleText, navigationIcon, navigationOnClick, dividerColor)
                 }
             },
             modifier = modifier
@@ -77,8 +89,7 @@ fun CustomToolbar(
                             navigationOnClick?.invoke()
                         }) {
                             Icon(
-                                imageVector = it,
-                                contentDescription = ""
+                                imageVector = it, contentDescription = ""
                             )
                         }
 

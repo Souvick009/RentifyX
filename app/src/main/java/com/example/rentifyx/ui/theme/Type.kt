@@ -50,7 +50,7 @@ val Typography = Typography(
         fontFamily = MontserratNormal,
         fontWeight = FontWeight.W600,
         fontSize = 15.sp,
-        lineHeight = 20.sp,
+        lineHeight = 0.sp,
         letterSpacing = 0.7.sp
     )
 )
