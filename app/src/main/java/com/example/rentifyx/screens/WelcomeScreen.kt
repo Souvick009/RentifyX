@@ -17,13 +17,13 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
@@ -31,9 +31,24 @@ import com.example.rentifyx.R
 import com.example.rentifyx.navigation.Routes
 import com.example.rentifyx.ui.theme.RentifyXTheme
 import com.example.rentifyx.ui.theme.WelcomeScreenColor
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
-fun WelcomeScreenWithConstraint(navController: NavHostController) {
+fun WelcomeScreen(navController: NavHostController) {
+
+    val systemUiController = rememberSystemUiController()
+
+    LaunchedEffect(Unit) {
+        systemUiController.setStatusBarColor(
+            color = WelcomeScreenColor,
+            darkIcons = false
+        )
+        systemUiController.setNavigationBarColor(
+            color = WelcomeScreenColor,
+            darkIcons = false,
+            navigationBarContrastEnforced = false
+        )
+    }
     RentifyXTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -58,7 +73,7 @@ fun WelcomeScreenWithConstraint(navController: NavHostController) {
                     color = Color.White,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.constrainAs(title) {
-                        top.linkTo(guidelineTop, margin = 0.dp)
+                        top.linkTo(guidelineTop, margin = 30.dp)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
                     }
@@ -113,7 +128,7 @@ fun WelcomeScreenWithConstraint(navController: NavHostController) {
                 }
 
                 OutlinedButton(
-                    onClick = { navController.navigate(Routes.TestScreen.route) },
+                    onClick = { navController.navigate(Routes.HomeScreen.route) },
                     border = BorderStroke(0.dp, Color.Transparent),
                     colors = ButtonDefaults.outlinedButtonColors(
                         containerColor = Color.Transparent,

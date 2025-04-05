@@ -3,12 +3,11 @@ package com.example.rentifyx.navigation
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.rentifyx.screens.TestScreen
-import com.example.rentifyx.screens.WelcomeScreenWithConstraint
+import com.example.rentifyx.screens.HomeScreen
+import com.example.rentifyx.screens.WelcomeScreen
 
 @Composable
 fun NavController() {
@@ -23,7 +22,14 @@ fun NavController() {
         popEnterTransition = { slideInHorizontally(initialOffsetX = { -it }) },
         popExitTransition = { slideOutHorizontally(targetOffsetX = { it }) }
     ) {
-        composable(route = Routes.WelcomeScreen.route) { WelcomeScreenWithConstraint(navController) }
-        composable(route = Routes.TestScreen.route) { TestScreen() }
+        composable(route = Routes.WelcomeScreen.route) {
+            WelcomeScreen(navController)
+        }
+
+        composable(route = Routes.HomeScreen.route) {
+            HomeScreen()
+        }
+
     }
 }
+
