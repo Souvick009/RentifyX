@@ -1,12 +1,9 @@
 package com.example.rentifyx.reusablecomposable
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -14,7 +11,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
@@ -24,36 +21,32 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.example.rentifyx.ui.theme.RentifyXTheme
+import com.example.rentifyx.ui.theme.WelcomeScreenColor
 
 @Composable
 fun BaseScreen(
     modifier: Modifier = Modifier,
-    titleText: String = "",
+    toolbarTitleText: String = "",
     navigationIcon: ImageVector? = null,
     navigationOnClick: (() -> Unit)? = null,
-    content: @Composable () -> Unit,
-    isToolbarNeeded: Boolean,
-    backgroundColorForSurface: Color
+    isAppBarNeeded: Boolean,
+    backgroundColorForSurface: Color,
+    dividerColor: Color?,
+    content: @Composable (PaddingValues) -> Unit
 ) {
     RentifyXTheme {
-        Surface(
+        Scaffold(
+            topBar = {
+                if (isAppBarNeeded) {
+                    CustomToolbar(toolbarTitleText, navigationIcon, navigationOnClick,dividerColor)
+                }
+            },
             modifier = modifier
                 .fillMaxSize()
                 .imePadding(),
-            color = backgroundColorForSurface
+            containerColor = backgroundColorForSurface
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .navigationBarsPadding()
-                    .statusBarsPadding()
-            ) {
-                if (isToolbarNeeded) {
-                    CustomToolbar(titleText, navigationIcon, navigationOnClick)
-                }
-                Spacer(Modifier.height(10.dp))
-                content()
-            }
+            content(it)
         }
     }
 
@@ -65,7 +58,8 @@ fun BaseScreen(
 fun CustomToolbar(
     titleText: String = "",
     navigationIcon: ImageVector? = null,
-    navigationOnClick: (() -> Unit)? = null
+    navigationOnClick: (() -> Unit)? = null,
+    dividerColor: Color?
 ) {
     RentifyXTheme {
         Column {
@@ -73,7 +67,7 @@ fun CustomToolbar(
                 title = {
                     Text(
                         titleText,
-                        style = MaterialTheme.typography.bodyLarge,
+                        style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier.wrapContentWidth(Alignment.Start)
                     )
                 },
@@ -91,7 +85,7 @@ fun CustomToolbar(
                     }
                 },
                 colors = TopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background,
+                    containerColor = Color.Transparent,
                     scrolledContainerColor = MaterialTheme.colorScheme.background,
                     navigationIconContentColor = MaterialTheme.colorScheme.onBackground,
                     titleContentColor = MaterialTheme.colorScheme.onBackground,
@@ -100,7 +94,7 @@ fun CustomToolbar(
             )
             HorizontalDivider(
                 thickness = 1.dp,
-                color = MaterialTheme.colorScheme.secondaryContainer
+                color = dividerColor ?: MaterialTheme.colorScheme.secondaryContainer,
             )
         }
 

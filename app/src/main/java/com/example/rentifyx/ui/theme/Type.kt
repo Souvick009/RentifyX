@@ -8,22 +8,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.rentifyx.R
 
-val MontserratBold = FontFamily(
+val MontserratExtraBold = FontFamily(
     Font(R.font.montserrat_black, FontWeight.Bold)
 )
 val MontserratNormal = FontFamily(
     Font(R.font.montserrat_light, FontWeight.Normal)
 )
+val MontserratMedium = FontFamily(
+    Font(R.font.montserrat_bold, FontWeight.Medium)
+)
 val Typography = Typography(
     bodyLarge = TextStyle(
-        fontFamily = MontserratBold,
+        fontFamily = MontserratExtraBold,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.7.sp
     ),
     titleLarge = TextStyle(
-        fontFamily = MontserratBold,
+        fontFamily = MontserratExtraBold,
         fontWeight = FontWeight.Bold,
         fontSize = 32.sp,
         lineHeight = 30.sp,
@@ -34,6 +37,20 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
+        letterSpacing = 0.7.sp
+    ),
+    bodySmall = TextStyle(
+        fontFamily = MontserratMedium,
+        fontWeight = FontWeight.W500,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.7.sp
+    ),
+    labelLarge = TextStyle(
+        fontFamily = MontserratNormal,
+        fontWeight = FontWeight.W600,
+        fontSize = 15.sp,
+        lineHeight = 20.sp,
         letterSpacing = 0.7.sp
     )
 )

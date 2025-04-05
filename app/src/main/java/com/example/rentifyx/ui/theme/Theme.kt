@@ -8,10 +8,12 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 
 private val LightColorScheme = lightColorScheme(
-
+    primary = WelcomeScreenColor,
+    background = backgroundColor,
+    secondaryContainer = appBarDividerColor,
+    surface = surfaceColor
 )
 
-@Suppress("SpellCheckingInspection")
 @Composable
 fun RentifyXTheme(
     content: @Composable () -> Unit
