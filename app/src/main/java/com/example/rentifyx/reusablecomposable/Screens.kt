@@ -56,8 +56,6 @@ fun BaseScreen(
             }
         }
     }
-
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

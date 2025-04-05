@@ -58,4 +58,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.androidx.constraintlayout.compose)
+
+    val navVersion = "2.8.9"
+
+    // Jetpack Compose Integration
+    implementation ("androidx.navigation:navigation-compose:$navVersion")
 }
