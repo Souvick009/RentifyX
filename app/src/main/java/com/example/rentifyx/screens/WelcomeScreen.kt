@@ -26,13 +26,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavHostController
 import com.example.rentifyx.R
+import com.example.rentifyx.navigation.Routes
 import com.example.rentifyx.ui.theme.RentifyXTheme
 import com.example.rentifyx.ui.theme.WelcomeScreenColor
 
-@Preview(showSystemUi = true)
 @Composable
-fun WelcomeScreenWithConstraint() {
+fun WelcomeScreenWithConstraint(navController: NavHostController) {
     RentifyXTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -112,7 +113,7 @@ fun WelcomeScreenWithConstraint() {
                 }
 
                 OutlinedButton(
-                    onClick = { },
+                    onClick = { navController.navigate(Routes.TestScreen.route) },
                     border = BorderStroke(0.dp, Color.Transparent),
                     colors = ButtonDefaults.outlinedButtonColors(
                         containerColor = Color.Transparent,
