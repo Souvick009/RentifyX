@@ -32,7 +32,7 @@ fun BaseScreen(
     navigationIcon: ImageVector? = null,
     navigationOnClick: (() -> Unit)? = null,
     isAppBarNeeded: Boolean,
-    backgroundColorForSurface: Color,
+    backgroundColorForSurface: Color? = null,
     dividerColor: Color?,
     content: @Composable (PaddingValues) -> Unit
 ) {
@@ -56,7 +56,7 @@ fun BaseScreen(
             modifier = modifier
                 .fillMaxSize()
                 .imePadding(),
-            containerColor = backgroundColorForSurface
+            containerColor = backgroundColorForSurface ?: MaterialTheme.colorScheme.background
         ) {
             content(it)
         }
@@ -79,7 +79,7 @@ fun CustomToolbar(
                 title = {
                     Text(
                         titleText,
-                        style = MaterialTheme.typography.bodySmall,
+                        style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.wrapContentWidth(Alignment.Start)
                     )
                 },

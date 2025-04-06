@@ -29,7 +29,7 @@ val Typography = Typography(
         fontFamily = MontserratExtraBold,
         fontWeight = FontWeight.Bold,
         fontSize = 32.sp,
-        lineHeight = 30.sp,
+        lineHeight = 35.sp,
         letterSpacing = 0.6.sp
     ),
     bodyMedium = TextStyle(

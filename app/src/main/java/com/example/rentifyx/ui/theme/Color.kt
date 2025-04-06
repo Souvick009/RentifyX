@@ -8,4 +8,4 @@ val appBarDividerColor = Color(0xFFC7C2C2)
 val surfaceColor = Color(0xFFECEFF1)
 
 
-//val backgroundColor = Color(0xFFCFC6FF) to be decided
+//val backgroundColor = Color(0xFFCFC6FF)
