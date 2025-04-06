@@ -35,6 +35,7 @@ import com.example.rentifyx.ui.theme.WelcomeScreenColor
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 
+
 @Preview
 @Composable
 private fun PreviewFunction() {
@@ -134,6 +135,7 @@ fun WelcomeScreen(navController: NavController) {
                             width = Dimension.fillToConstraints
                         },
                     shape = RoundedCornerShape(30.dp)
+
                 ) {
                     Text("Sign In", style = MaterialTheme.typography.bodyLarge)
                 }
