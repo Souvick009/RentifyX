@@ -4,12 +4,9 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
@@ -26,15 +23,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.navigation.NavHostController
+import androidx.constraintlayout.compose.Dimension
+import androidx.navigation.NavController
 import com.example.rentifyx.R
 import com.example.rentifyx.navigation.Routes
 import com.example.rentifyx.ui.theme.RentifyXTheme
 import com.example.rentifyx.ui.theme.WelcomeScreenColor
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
+
 @Composable
-fun WelcomeScreen(navController: NavHostController) {
+fun WelcomeScreen(navController: NavController) {
 
     val systemUiController = rememberSystemUiController()
 
@@ -49,6 +48,7 @@ fun WelcomeScreen(navController: NavHostController) {
             navigationBarContrastEnforced = false
         )
     }
+
     RentifyXTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -60,13 +60,13 @@ fun WelcomeScreen(navController: NavHostController) {
                     .statusBarsPadding()
                     .navigationBarsPadding()
             ) {
-                val (title,
-                    subtitle,
-                    image,
-                    signInBtn,
-                    guestBtn)
-                        = createRefs()
+                val (title, subtitle, image, signInBtn, guestBtn) = createRefs()
+
                 val guidelineTop = createGuidelineFromTop(0.02f)
+                val topGuidelineForImg = createGuidelineFromTop(0.3f)
+                val startGuideline = createGuidelineFromStart(0.08f)
+                val endGuideline = createGuidelineFromEnd(0.08f)
+
                 Text(
                     text = "Why Buy?\nJust Rent!",
                     style = MaterialTheme.typography.titleLarge,
@@ -74,8 +74,9 @@ fun WelcomeScreen(navController: NavHostController) {
                     textAlign = TextAlign.Center,
                     modifier = Modifier.constrainAs(title) {
                         top.linkTo(guidelineTop, margin = 30.dp)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
+                        start.linkTo(startGuideline)
+                        end.linkTo(endGuideline)
+                        width = Dimension.fillToConstraints
                     }
                 )
 
@@ -85,13 +86,12 @@ fun WelcomeScreen(navController: NavHostController) {
                     color = Color.White,
                     fontWeight = FontWeight.W600,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .widthIn(max = 350.dp)
-                        .constrainAs(subtitle) {
-                            top.linkTo(title.bottom, margin = 16.dp)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                        }
+                    modifier = Modifier.constrainAs(subtitle) {
+                        top.linkTo(title.bottom, margin = 16.dp)
+                        start.linkTo(startGuideline)
+                        end.linkTo(endGuideline)
+                        width = Dimension.fillToConstraints
+                    }
                 )
 
                 Image(
@@ -99,12 +99,12 @@ fun WelcomeScreen(navController: NavHostController) {
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
-                        .fillMaxWidth(0.8f)
                         .aspectRatio(1f)
                         .constrainAs(image) {
-                            top.linkTo(subtitle.bottom, margin = 50.dp)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
+                            top.linkTo(topGuidelineForImg)
+                            start.linkTo(startGuideline)
+                            end.linkTo(endGuideline)
+                            width = Dimension.fillToConstraints
                         }
                 )
 
@@ -115,33 +115,33 @@ fun WelcomeScreen(navController: NavHostController) {
                         contentColor = WelcomeScreenColor
                     ),
                     modifier = Modifier
-                        .fillMaxWidth()
                         .height(52.dp)
-                        .padding(horizontal = 24.dp)
                         .constrainAs(signInBtn) {
                             bottom.linkTo(guestBtn.top, margin = 12.dp)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
+                            start.linkTo(startGuideline)
+                            end.linkTo(endGuideline)
+                            width = Dimension.fillToConstraints
                         }
                 ) {
                     Text("Sign In", style = MaterialTheme.typography.bodyLarge)
                 }
 
                 OutlinedButton(
-                    onClick = { navController.navigate(Routes.HomeScreen.route) },
+                    onClick = {
+                        navController.navigate(Routes.HomeScreen.route)
+                    },
                     border = BorderStroke(0.dp, Color.Transparent),
                     colors = ButtonDefaults.outlinedButtonColors(
                         containerColor = Color.Transparent,
                         contentColor = Color.White
                     ),
                     modifier = Modifier
-                        .fillMaxWidth()
                         .height(52.dp)
-                        .padding(horizontal = 24.dp)
                         .constrainAs(guestBtn) {
                             bottom.linkTo(parent.bottom, margin = 24.dp)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
+                            start.linkTo(startGuideline)
+                            end.linkTo(endGuideline)
+                            width = Dimension.fillToConstraints
                         }
                 ) {
                     Text("Continue as Guest", style = MaterialTheme.typography.bodyLarge)
@@ -150,5 +150,6 @@ fun WelcomeScreen(navController: NavHostController) {
         }
     }
 }
+
 
 
