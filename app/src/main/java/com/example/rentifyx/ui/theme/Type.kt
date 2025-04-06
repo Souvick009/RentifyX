@@ -25,7 +25,7 @@ val Typography = Typography(
         lineHeight = 24.sp,
         letterSpacing = 0.7.sp
     ),
-    titleLarge = TextStyle(
+    titleLarge = TextStyle( //big headings
         fontFamily = MontserratExtraBold,
         fontWeight = FontWeight.Bold,
         fontSize = 32.sp,
