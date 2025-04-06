@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
@@ -18,9 +19,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -32,6 +35,13 @@ import com.example.rentifyx.ui.theme.WelcomeScreenColor
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 
+
+@Preview
+@Composable
+private fun PreviewFunction() {
+    val navController = NavController(LocalContext.current)
+    WelcomeScreen(navController)
+}
 @Composable
 fun WelcomeScreen(navController: NavController) {
 
@@ -109,7 +119,9 @@ fun WelcomeScreen(navController: NavController) {
                 )
 
                 FilledTonalButton(
-                    onClick = { },
+                    onClick = {
+                        navController.navigate(Routes.UserDetailsScreen.route)
+                    },
                     colors = ButtonDefaults.filledTonalButtonColors(
                         containerColor = Color.White,
                         contentColor = WelcomeScreenColor
@@ -121,7 +133,9 @@ fun WelcomeScreen(navController: NavController) {
                             start.linkTo(startGuideline)
                             end.linkTo(endGuideline)
                             width = Dimension.fillToConstraints
-                        }
+                        },
+                    shape = RoundedCornerShape(30.dp)
+
                 ) {
                     Text("Sign In", style = MaterialTheme.typography.bodyLarge)
                 }

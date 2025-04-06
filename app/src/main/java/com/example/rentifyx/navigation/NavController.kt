@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.rentifyx.screens.HomeScreen
+import com.example.rentifyx.screens.UserDetailsScreen
 import com.example.rentifyx.screens.WelcomeScreen
 
 @Composable
@@ -28,6 +29,9 @@ fun NavController() {
 
         composable(route = Routes.HomeScreen.route) {
             HomeScreen()
+        }
+        composable(route = Routes.UserDetailsScreen.route) {
+            UserDetailsScreen()
         }
 
     }
