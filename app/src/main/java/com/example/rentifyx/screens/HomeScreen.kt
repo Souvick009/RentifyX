@@ -177,10 +177,10 @@ fun HomeScreen() {
                                     width = Dimension.fillToConstraints
                                 }
                                 .height(230.dp), content = {
-                            items(25) { item ->
-                                Text("Testing ")
-                            }
-                        })
+                                items(25) { item ->
+                                    Text("Testing ")
+                                }
+                            })
 
                         Text(
                             "Browse by Products",
@@ -200,5 +200,3 @@ fun HomeScreen() {
         }
     }
 }
-
-
