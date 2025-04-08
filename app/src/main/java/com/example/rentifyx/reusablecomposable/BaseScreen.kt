@@ -33,7 +33,7 @@ fun BaseScreen(
     navigationOnClick: (() -> Unit)? = null,
     isAppBarNeeded: Boolean,
     backgroundColorForSurface: Color? = null,
-    dividerColor: Color?,
+    dividerColor: Color? = MaterialTheme.colorScheme.primary.copy(alpha = 1f),
     content: @Composable (PaddingValues) -> Unit
 ) {
     val systemUiController = rememberSystemUiController()
@@ -50,7 +50,12 @@ fun BaseScreen(
         Scaffold(
             topBar = {
                 if (isAppBarNeeded) {
-                    CustomToolbar(toolbarTitleText, navigationIcon, navigationOnClick, dividerColor)
+                    CustomToolbar(
+                        toolbarTitleText,
+                        navigationIcon,
+                        navigationOnClick,
+                        dividerColor ?: MaterialTheme.colorScheme.primary.copy(alpha = 1f)
+                    )
                 }
             },
             modifier = modifier
@@ -71,7 +76,7 @@ fun CustomToolbar(
     titleText: String = "",
     navigationIcon: ImageVector? = null,
     navigationOnClick: (() -> Unit)? = null,
-    dividerColor: Color?
+    dividerColor: Color
 ) {
     RentifyXTheme {
         Column {
@@ -105,7 +110,7 @@ fun CustomToolbar(
             )
             HorizontalDivider(
                 thickness = 1.dp,
-                color = dividerColor ?: MaterialTheme.colorScheme.secondaryContainer,
+                color = dividerColor
             )
         }
 
