@@ -137,7 +137,7 @@ fun WelcomeScreen(navController: NavController) {
                     shape = RoundedCornerShape(30.dp)
 
                 ) {
-                    Text("Sign In", style = MaterialTheme.typography.bodyLarge)
+                    Text("Sign In with Google", style = MaterialTheme.typography.bodyLarge)
                 }
 
                 OutlinedButton(

@@ -96,35 +96,35 @@ fun UserDetailsScreen() {
                     Icon(Icons.Outlined.Phone, contentDescription = null)
                 }
             )
-            CustomInputField(
-                value = phoneNumber,
-                onValueChange = {
-                    phoneNumber = it
-                    if (phoneError != null) phoneError = null
-                },
-                label = "Phone Number",
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                isError = phoneError != null,
-                errorMessage = phoneError,
-                leadingIcon = {
-                    Icon(Icons.Outlined.Phone, contentDescription = null)
-                }
-            )
-
-            CustomInputField(
-                value = phoneNumber,
-                onValueChange = {
-                    phoneNumber = it
-                    if (phoneError != null) phoneError = null
-                },
-                label = "Phone Number",
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                isError = phoneError != null,
-                errorMessage = phoneError,
-                leadingIcon = {
-                    Icon(Icons.Outlined.Phone, contentDescription = null)
-                }
-            )
+//            CustomInputField(
+//                value = phoneNumber,
+//                onValueChange = {
+//                    phoneNumber = it
+//                    if (phoneError != null) phoneError = null
+//                },
+//                label = "Phone Number",
+//                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+//                isError = phoneError != null,
+//                errorMessage = phoneError,
+//                leadingIcon = {
+//                    Icon(Icons.Outlined.Phone, contentDescription = null)
+//                }
+//            )
+//
+//            CustomInputField(
+//                value = phoneNumber,
+//                onValueChange = {
+//                    phoneNumber = it
+//                    if (phoneError != null) phoneError = null
+//                },
+//                label = "Phone Number",
+//                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+//                isError = phoneError != null,
+//                errorMessage = phoneError,
+//                leadingIcon = {
+//                    Icon(Icons.Outlined.Phone, contentDescription = null)
+//                }
+//            )
 
 
 

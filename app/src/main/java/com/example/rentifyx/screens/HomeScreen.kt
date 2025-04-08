@@ -1,7 +1,10 @@
 package com.example.rentifyx.screens
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -9,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
@@ -31,26 +35,39 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.navigation.NavController
+import com.example.rentifyx.R
+import com.example.rentifyx.navigation.Routes
 import com.example.rentifyx.reusablecomposable.BaseScreen
+import com.example.rentifyx.reusablecomposable.CustomCard
 import com.example.rentifyx.reusablecomposable.HorizontalPages
 import com.example.rentifyx.ui.theme.RentifyXTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-@Preview(showSystemUi = true)
 @Composable
-fun HomeScreen() {
+@Preview(showSystemUi = true)
+private fun Preview() {
+    HomeScreen(navController = NavController(LocalContext.current))
+}
+
+@Composable
+fun HomeScreen(
+    navController: NavController
+) {
     var searchText by rememberSaveable { mutableStateOf("") }
     var isFocused by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
     val pagerState = rememberPagerState(pageCount = { 3 })
     val coroutineScope = rememberCoroutineScope()
-
+    val products = remember { (0 until 99).toList() }
+    val chunked = remember { products.chunked(2) }
     LaunchedEffect(Unit) {
         pagerState.animateScrollToPage(0)
     }
@@ -96,6 +113,7 @@ fun HomeScreen() {
 
                         OutlinedTextField(
                             value = searchText,
+                            readOnly = true,
                             onValueChange = { searchText = it },
                             singleLine = true,
                             placeholder = {
@@ -115,17 +133,21 @@ fun HomeScreen() {
                                     end.linkTo(verticalGuideLineEnd)
                                     width = Dimension.fillToConstraints
                                 }
-                                .onFocusChanged { isFocused = it.isFocused },
+                                .onFocusChanged {
+                                    if (it.isFocused) {
+                                        navController.navigate(Routes.SearchScreen.route)
+                                    }
+                                },
                             textStyle = MaterialTheme.typography.labelLarge,
                             colors = TextFieldDefaults.colors(
                                 focusedContainerColor = MaterialTheme.colorScheme.surface,
                                 unfocusedContainerColor = MaterialTheme.colorScheme.surface,
                                 focusedIndicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
                                 unfocusedIndicatorColor = MaterialTheme.colorScheme.primary.copy(
-                                    alpha = 0.1f
+                                    alpha = 0.5f
                                 ),
                                 focusedLabelColor = MaterialTheme.colorScheme.primary,
-                                focusedLeadingIconColor = MaterialTheme.colorScheme.primary
+                                focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
                             ),
                             trailingIcon = {
                                 if (searchText.isNotEmpty()) {
@@ -136,7 +158,7 @@ fun HomeScreen() {
                                         )
                                     }
                                 }
-                            },
+                            }
                         )
 
                         HorizontalPager(
@@ -175,10 +197,14 @@ fun HomeScreen() {
                                     start.linkTo(verticalGuideLineStart)
                                     end.linkTo(verticalGuideLineEnd)
                                     width = Dimension.fillToConstraints
-                                }
-                                .height(230.dp), content = {
+                                },
+                            content = {
                                 items(25) { item ->
-                                    Text("Testing ")
+                                    CustomCard(
+                                        imageRes = R.drawable.test_image2,
+                                        title = "Pencil",
+                                        onClick = {}
+                                    )
                                 }
                             })
 
@@ -193,9 +219,28 @@ fun HomeScreen() {
                             })
                     }
                 }
-                items(100) { index ->
-                    Text("Hi")
+                items(chunked) { rowItems ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        rowItems.forEach { item ->
+                            CustomCard(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(horizontal = 4.dp),
+                                imageRes = R.drawable.test_image3,
+                                title = "Product $item fdssds ",
+                                subtitle = "₹100/day",
+                                onClick = {}
+                            )
+                        }
+                        if (rowItems.size < 2) {
+                            Spacer(modifier = Modifier.weight(1f))
+                        }
+                    }
                 }
+
             }
         }
     }
