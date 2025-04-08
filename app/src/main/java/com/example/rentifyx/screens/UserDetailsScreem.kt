@@ -26,16 +26,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.rentifyx.reusablecomposable.BaseScreen
 import com.example.rentifyx.reusablecomposable.CustomInputField
 import com.example.rentifyx.reusablecomposable.PrimaryButton
-
-@Preview(showSystemUi = true)
-
+import com.example.rentifyx.viewmodel.AuthViewModel
 
 @Composable
-fun UserDetailsScreen() {
-    var fullName by rememberSaveable { mutableStateOf("") }
+fun UserDetailsScreen(navController: NavHostController, authViewModel: AuthViewModel) {
+    var fullName by rememberSaveable { mutableStateOf(authViewModel.displayName) }
     var fullNameError by remember { mutableStateOf<String?>(null) }
 
     var phoneNumber by rememberSaveable { mutableStateOf("") }
@@ -53,7 +52,6 @@ fun UserDetailsScreen() {
                 .padding(horizontal = 15.dp)
                 .verticalScroll(rememberScrollState())
                 .imePadding(), // push everything above keyboard
-            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Spacer(modifier = Modifier.height(36.dp))
 
@@ -62,11 +60,15 @@ fun UserDetailsScreen() {
                 style = MaterialTheme.typography.titleLarge
             )
 
+            Spacer(modifier = Modifier.height(18.dp))
+
             Text(
                 text = "We just need a few more details to personalize your experience.",
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
+
+            Spacer(modifier = Modifier.height(18.dp))
 
             CustomInputField(
                 value = fullName,
@@ -81,6 +83,8 @@ fun UserDetailsScreen() {
                     Icon(Icons.Outlined.AccountCircle, contentDescription = null)
                 }
             )
+
+            Spacer(modifier = Modifier.height(18.dp))
 
             CustomInputField(
                 value = phoneNumber,
@@ -128,7 +132,7 @@ fun UserDetailsScreen() {
 
 
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(18.dp))
 
             PrimaryButton(
                 onClick = {
@@ -136,8 +140,6 @@ fun UserDetailsScreen() {
                 },
                 text = "Continue"
             )
-
-            Spacer(modifier = Modifier.height(20.dp))
         }
     }
 }
