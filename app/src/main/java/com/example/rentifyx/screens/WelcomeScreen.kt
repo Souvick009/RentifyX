@@ -1,5 +1,9 @@
 package com.example.rentifyx.screens
 
+import android.util.Log
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.aspectRatio
@@ -9,6 +13,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -16,6 +21,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -32,18 +40,20 @@ import com.example.rentifyx.R
 import com.example.rentifyx.navigation.Routes
 import com.example.rentifyx.ui.theme.RentifyXTheme
 import com.example.rentifyx.ui.theme.WelcomeScreenColor
+import com.example.rentifyx.viewmodel.AuthViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.common.api.ApiException
 
+//@Preview
+//@Composable
+//private fun PreviewFunction() {
+//    val navController = NavController(LocalContext.current)
+//    WelcomeScreen(navController)
+//}
 
-
-@Preview
 @Composable
-private fun PreviewFunction() {
-    val navController = NavController(LocalContext.current)
-    WelcomeScreen(navController)
-}
-@Composable
-fun WelcomeScreen(navController: NavController) {
+fun WelcomeScreen(navController: NavController, authViewModel: AuthViewModel) {
 
     val systemUiController = rememberSystemUiController()
 
@@ -58,6 +68,34 @@ fun WelcomeScreen(navController: NavController) {
             navigationBarContrastEnforced = false
         )
     }
+
+    val context = LocalContext.current
+
+    val googleLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+
+        try {
+            val account = task.getResult(ApiException::class.java)
+
+            account?.let { account ->
+                authViewModel.signInWithGoogle(account, onResult = { success ->
+                    if (success) {
+                        navController.navigate(Routes.UserDetailsScreen.route)
+                    } else {
+                        Toast.makeText(context, "Failed to login, try again.", Toast.LENGTH_LONG)
+                            .show()
+                    }
+                })
+            }
+
+        } catch (exception: ApiException) {
+            Log.d("Api Exception while logging in via google", exception.toString())
+        }
+    }
+
+
 
     RentifyXTheme {
         Surface(
@@ -118,9 +156,12 @@ fun WelcomeScreen(navController: NavController) {
                         }
                 )
 
+
                 FilledTonalButton(
                     onClick = {
-                        navController.navigate(Routes.UserDetailsScreen.route)
+                        authViewModel.isLoading.value = true
+                        val intent = authViewModel.googleSignInClient.signInIntent
+                        googleLauncher.launch(intent)
                     },
                     colors = ButtonDefaults.filledTonalButtonColors(
                         containerColor = Color.White,
@@ -137,7 +178,11 @@ fun WelcomeScreen(navController: NavController) {
                     shape = RoundedCornerShape(30.dp)
 
                 ) {
-                    Text("Sign In with Google", style = MaterialTheme.typography.bodyLarge)
+                    if (authViewModel.isLoading.value) {
+                        CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+                    } else {
+                        Text("Sign In with Google", style = MaterialTheme.typography.bodyLarge)
+                    }
                 }
 
                 OutlinedButton(

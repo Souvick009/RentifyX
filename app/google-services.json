@@ -1,0 +1,122 @@
+{
+  "project_info": {
+    "project_number": "124079031509",
+    "firebase_url": "https://chatease2024-aa2e1-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "chatease2024-aa2e1",
+    "storage_bucket": "chatease2024-aa2e1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124079031509:android:4e653f1c76c0debaa00e5c",
+        "android_client_info": {
+          "package_name": "com.example.chatease"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "124079031509-e52o9fe8jlvt5m14gc5cua22m7tkp4e3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chatease",
+            "certificate_hash": "3c07da9308b013a297254c9679fd4000f9e85137"
+          }
+        },
+        {
+          "client_id": "124079031509-jngbjl0krla1h44a1f85uivjl4t787ab.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbsBp178I6K1khlYS5ftLD10mV2uAQbTI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "124079031509-jngbjl0krla1h44a1f85uivjl4t787ab.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124079031509:android:e004ec4d6648e082a00e5c",
+        "android_client_info": {
+          "package_name": "com.example.firebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "124079031509-pfr32ljr2ptht5j9ruk8m73cevk7ugaa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.firebase",
+            "certificate_hash": "3c07da9308b013a297254c9679fd4000f9e85137"
+          }
+        },
+        {
+          "client_id": "124079031509-jngbjl0krla1h44a1f85uivjl4t787ab.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbsBp178I6K1khlYS5ftLD10mV2uAQbTI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "124079031509-jngbjl0krla1h44a1f85uivjl4t787ab.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124079031509:android:31ef576cb900d9d9a00e5c",
+        "android_client_info": {
+          "package_name": "com.example.rentifyx"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "124079031509-k3hh2duraapeqf0oa5brnck8e5ubs5dd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.rentifyx",
+            "certificate_hash": "2558ae677b010d2549fea9201baacbe2bd663579"
+          }
+        },
+        {
+          "client_id": "124079031509-jngbjl0krla1h44a1f85uivjl4t787ab.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbsBp178I6K1khlYS5ftLD10mV2uAQbTI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "124079031509-jngbjl0krla1h44a1f85uivjl4t787ab.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
