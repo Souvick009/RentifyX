@@ -32,11 +32,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -45,14 +47,19 @@ import androidx.navigation.NavController
 import com.example.rentifyx.R
 import com.example.rentifyx.navigation.Routes
 import com.example.rentifyx.reusablecomposable.BaseScreen
-import com.example.rentifyx.reusablecomposable.CustomCard
+import com.example.rentifyx.reusablecomposable.HorizontalCard
 import com.example.rentifyx.reusablecomposable.HorizontalPages
+import com.example.rentifyx.reusablecomposable.VerticalCard
 import com.example.rentifyx.ui.theme.RentifyXTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-@Preview(showSystemUi = true)
+@Preview(
+    showSystemUi = true,
+    device = Devices.PIXEL_7
+)
+
 private fun Preview() {
     HomeScreen(navController = NavController(LocalContext.current))
 }
@@ -66,7 +73,7 @@ fun HomeScreen(
     val focusManager = LocalFocusManager.current
     val pagerState = rememberPagerState(pageCount = { 3 })
     val coroutineScope = rememberCoroutineScope()
-    val products = remember { (0 until 99).toList() }
+    val products = remember { (0 until 20).toList() }
     val chunked = remember { products.chunked(2) }
     LaunchedEffect(Unit) {
         pagerState.animateScrollToPage(0)
@@ -198,12 +205,15 @@ fun HomeScreen(
                                     end.linkTo(verticalGuideLineEnd)
                                     width = Dimension.fillToConstraints
                                 },
+                            contentPadding = PaddingValues(horizontal = 6.dp),
+                            horizontalArrangement = Arrangement.spacedBy(16.dp),
                             content = {
                                 items(25) { item ->
-                                    CustomCard(
-                                        imageRes = R.drawable.test_image2,
-                                        title = "Pencil",
-                                        onClick = {}
+                                    HorizontalCard(
+                                        modifier = Modifier,
+                                        title = "Tools",
+                                        onClick = {},
+                                        imageRes = R.drawable.test_image3
                                     )
                                 }
                             })
@@ -221,16 +231,18 @@ fun HomeScreen(
                 }
                 items(chunked) { rowItems ->
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        modifier = Modifier.fillMaxWidth()
+                            .padding(vertical = 12.dp)
+                        ,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
                     ) {
                         rowItems.forEach { item ->
-                            CustomCard(
+                            VerticalCard(
                                 modifier = Modifier
                                     .weight(1f)
                                     .padding(horizontal = 4.dp),
-                                imageRes = R.drawable.test_image3,
-                                title = "Product $item fdssds ",
+                                imageRes = R.drawable.test_image2,
+                                title = "Product $item",
                                 subtitle = "₹100/day",
                                 onClick = {}
                             )
