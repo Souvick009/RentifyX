@@ -11,7 +11,6 @@ class AuthRepository {
     private val auth = FirebaseAuth.getInstance()
 
     private val firestore = FirebaseFirestore.getInstance()
-
     fun isUserLoggedIn(): Boolean = auth.currentUser != null
 
     fun getCurrentUser(): FirebaseUser? = auth.currentUser
