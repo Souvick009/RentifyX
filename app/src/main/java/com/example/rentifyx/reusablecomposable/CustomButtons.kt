@@ -16,11 +16,10 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun PrimaryButton(
-    text: String,
+    composables: (@Composable () -> Unit),
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    leadingIcon: (@Composable () -> Unit)? = null
 ) {
     Button(
         onClick = onClick,
@@ -30,15 +29,7 @@ fun PrimaryButton(
         enabled = enabled,
         shape = RoundedCornerShape(30.dp),
     ) {
-        if (leadingIcon != null) {
-            leadingIcon()
-            Spacer(modifier = Modifier.width(8.dp))
-        }
-        Text(
-            text = text,
-            style = MaterialTheme.typography.bodyLarge
-        )
-
+        composables()
     }
 }
 @Composable

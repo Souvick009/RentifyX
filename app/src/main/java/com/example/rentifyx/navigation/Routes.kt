@@ -1,6 +1,7 @@
 package com.example.rentifyx.navigation
 
 sealed class Routes(val route: String) {
+    object DeciderScreen : Routes("DeciderScreen")
     object WelcomeScreen : Routes("WelcomeScreen")
     object HomeScreen : Routes("HomeScreen")
     object UserDetailsScreen : Routes("UserDetailsScreen")
