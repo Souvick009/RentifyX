@@ -5,12 +5,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -18,7 +16,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -26,16 +23,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.rentifyx.R
-import com.example.rentifyx.ui.theme.RentifyXTheme
 
 @Composable
 private fun PreviewFunction() {
     HorizontalCard(
         modifier = Modifier,
-      title = "Ram",
+        title = "Ram",
         onClick = {}
     )
 }
@@ -50,8 +44,8 @@ fun HorizontalCard(
 ) {
     Card(
         modifier = modifier
-            .width(160.dp) // Card width in LazyRow
-            .height(240.dp) // Total height — Tweak as you like!
+            .width(160.dp)
+            .height(240.dp)
             .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
@@ -110,7 +104,7 @@ fun VerticalCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(240.dp) // Total height for vertical layout
+            .height(240.dp)
             .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
@@ -123,7 +117,7 @@ fun VerticalCard(
                     contentDescription = title,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(160.dp) // Image height portion
+                        .height(160.dp)
                         .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
                     contentScale = ContentScale.Crop
                 )

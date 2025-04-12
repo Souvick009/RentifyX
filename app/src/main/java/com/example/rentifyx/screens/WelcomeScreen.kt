@@ -24,6 +24,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -37,19 +38,13 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import com.example.rentifyx.R
 import com.example.rentifyx.navigation.Routes
+import com.example.rentifyx.states.AuthState
 import com.example.rentifyx.ui.theme.RentifyXTheme
 import com.example.rentifyx.ui.theme.WelcomeScreenColor
 import com.example.rentifyx.viewmodel.AuthViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
-
-//@Preview
-//@Composable
-//private fun PreviewFunction() {
-//    val navController = NavController(LocalContext.current)
-//    WelcomeScreen(navController)
-//}
 
 @Composable
 fun WelcomeScreen(navController: NavController, authViewModel: AuthViewModel) {
@@ -79,12 +74,29 @@ fun WelcomeScreen(navController: NavController, authViewModel: AuthViewModel) {
             val account = task.getResult(ApiException::class.java)
 
             account?.let { account ->
-                authViewModel.signInWithGoogle(account, onResult = { success ->
-                    if (success) {
-                        navController.navigate(Routes.UserDetailsScreen.route)
-                    } else {
-                        Toast.makeText(context, "Failed to login, try again.", Toast.LENGTH_LONG)
-                            .show()
+                authViewModel.signInWithGoogle(account, onResult = { userType ->
+                    authViewModel.isLoading.value = false
+                    when (userType) {
+                        "hasAccount" -> {
+                            navController.navigate(Routes.HomeScreen.route) {
+                                popUpTo(
+                                    Routes.WelcomeScreen.route
+                                ) { inclusive = true }
+                            }
+                            Log.d("hmm", "2")
+                        }
+
+                        "doesntHasAccount" -> {
+                            navController.navigate(Routes.UserDetailsScreen.route)
+                        }
+
+                        else -> {
+                            Toast.makeText(
+                                context,
+                                "Failed to login, try again.",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                     }
                 })
             }
@@ -174,14 +186,8 @@ fun WelcomeScreen(navController: NavController, authViewModel: AuthViewModel) {
                             end.linkTo(endGuideline)
                             width = Dimension.fillToConstraints
                         },
-                    shape = RoundedCornerShape(30.dp),
-                    elevation = ButtonDefaults.buttonElevation(
-                        defaultElevation = 5.dp,
-                        pressedElevation = 10.dp,
-                        focusedElevation = 5.dp,
-                        hoveredElevation = 7.dp,
-                        disabledElevation = 0.dp
-                    ),
+                    shape = RoundedCornerShape(30.dp)
+
                 ) {
                     if (authViewModel.isLoading.value) {
                         CircularProgressIndicator(
@@ -202,6 +208,7 @@ fun WelcomeScreen(navController: NavController, authViewModel: AuthViewModel) {
 
                 OutlinedButton(
                     onClick = {
+                        authViewModel.markAsGuest(true)
                         navController.navigate(Routes.HomeScreen.route)
                     },
                     border = BorderStroke(0.dp, Color.Transparent),
