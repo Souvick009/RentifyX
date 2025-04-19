@@ -32,34 +32,43 @@ fun BaseScreen(
     navigationIcon: ImageVector? = null,
     navigationOnClick: (() -> Unit)? = null,
     isAppBarNeeded: Boolean,
+    showDivider: Boolean = false,
     backgroundColorForSurface: Color? = null,
-    dividerColor: Color? = MaterialTheme.colorScheme.primary.copy(alpha = 1f),
-    content: @Composable (PaddingValues) -> Unit
+    dividerColor: Color = MaterialTheme.colorScheme.primary.copy(alpha = 1f),
+    bottomAppBar: @Composable () -> Unit = {},
+    statusBarColor: Color = backgroundColor,
+    navigationBarColor: Color = backgroundColor,
+    content: @Composable (PaddingValues) -> Unit,
 ) {
     val systemUiController = rememberSystemUiController()
 
     LaunchedEffect(Unit) {
         systemUiController.setStatusBarColor(
-            color = backgroundColor, darkIcons = true
+            color = statusBarColor, darkIcons = true
         )
         systemUiController.setNavigationBarColor(
-            color = backgroundColor, darkIcons = true, navigationBarContrastEnforced = false
+            color = navigationBarColor, darkIcons = true, navigationBarContrastEnforced = false
         )
     }
+
     RentifyXTheme {
         Scaffold(
             topBar = {
                 if (isAppBarNeeded) {
                     CustomToolbar(
-                        toolbarTitleText,
-                        navigationIcon,
-                        navigationOnClick,
-                        dividerColor ?: MaterialTheme.colorScheme.primary.copy(alpha = 1f)
+                        titleText = toolbarTitleText,
+                        navigationIcon = navigationIcon,
+                        navigationOnClick = navigationOnClick,
+                        showDivider = showDivider,
+                        dividerColor = dividerColor
                     )
                 }
             },
-            modifier = modifier.fillMaxSize(),
-            containerColor = backgroundColorForSurface ?: MaterialTheme.colorScheme.background
+            modifier = modifier
+                .fillMaxSize()
+                .imePadding(),
+            containerColor = backgroundColorForSurface ?: MaterialTheme.colorScheme.background,
+            bottomBar = bottomAppBar
         ) {
             content(it)
         }
@@ -69,13 +78,15 @@ fun BaseScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomToolbar(
+    modifier: Modifier = Modifier,
     titleText: String = "",
     navigationIcon: ImageVector? = null,
     navigationOnClick: (() -> Unit)? = null,
-    dividerColor: Color
+    showDivider: Boolean = true,
+    dividerColor: Color = MaterialTheme.colorScheme.primary.copy(alpha = 1f)
 ) {
     RentifyXTheme {
-        Column {
+        Column(modifier = modifier) {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
@@ -86,14 +97,9 @@ fun CustomToolbar(
                 },
                 navigationIcon = {
                     navigationIcon?.let {
-                        IconButton(onClick = {
-                            navigationOnClick?.invoke()
-                        }) {
-                            Icon(
-                                imageVector = it, contentDescription = ""
-                            )
+                        IconButton(onClick = { navigationOnClick?.invoke() }) {
+                            Icon(imageVector = it, contentDescription = "")
                         }
-
                     }
                 },
                 colors = TopAppBarColors(
@@ -104,10 +110,12 @@ fun CustomToolbar(
                     actionIconContentColor = MaterialTheme.colorScheme.background
                 ),
             )
-            HorizontalDivider(
-                thickness = 1.dp,
-                color = dividerColor
-            )
+            if (showDivider) {
+                HorizontalDivider(
+                    thickness = 1.dp,
+                    color = dividerColor
+                )
+            }
         }
     }
 }

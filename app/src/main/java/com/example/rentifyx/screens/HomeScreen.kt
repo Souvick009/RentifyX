@@ -42,7 +42,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.rentifyx.R
 import com.example.rentifyx.navigation.Routes
-import com.example.rentifyx.reusablecomposable.BaseScreen
 import com.example.rentifyx.reusablecomposable.HorizontalCard
 import com.example.rentifyx.reusablecomposable.HorizontalPages
 import com.example.rentifyx.reusablecomposable.VerticalCard
@@ -50,18 +49,6 @@ import com.example.rentifyx.ui.theme.RentifyXTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-//@Composable
-//@Preview(
-//    showSystemUi = true,
-//    device = Devices.PIXEL_7
-//)
-
-//private fun Preview() {
-//    HomeScreen(
-//        appNavController = NavController(LocalContext.current),
-//        bottomNavController = bottomNavController
-//    )
-//}
 
 @Composable
 fun HomeScreen(
@@ -88,167 +75,157 @@ fun HomeScreen(
     }
 
     RentifyXTheme {
-        BaseScreen(
-            modifier = Modifier,
-            isAppBarNeeded = true,
-            toolbarTitleText = "RentifyX",
-            backgroundColorForSurface = MaterialTheme.colorScheme.background,
-            dividerColor = MaterialTheme.colorScheme.background
-        ) { padding ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentPadding = PaddingValues(bottom = 24.dp, start = 16.dp, end = 16.dp)
+        ) {
+            item {
+                ConstraintLayout(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                ) {
+                    val (searchTextField, horizontalSlider, browseByCategoryText, lazyRowCategory, browseByProductText) = createRefs()
 
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding),
-                contentPadding = PaddingValues(bottom = 24.dp, start = 16.dp, end = 16.dp)
-            ) {
-                item {
-                    ConstraintLayout(
+                    val verticalGuideLineStart = createGuidelineFromStart(0.00f)
+                    val verticalGuideLineEnd = createGuidelineFromEnd(0.00f)
+
+                    OutlinedTextField(
+                        value = searchText,
+                        readOnly = true,
+                        onValueChange = { searchText = it },
+                        singleLine = true,
+                        placeholder = {
+                            Text(
+                                "Search For Products",
+                                style = MaterialTheme.typography.labelLarge
+                            )
+                        },
+                        leadingIcon = {
+                            Icon(Icons.Filled.Search, contentDescription = "Search")
+                        },
+                        shape = MaterialTheme.shapes.extraLarge,
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                    ) {
-                        val (searchTextField, horizontalSlider, browseByCategoryText, lazyRowCategory, browseByProductText) = createRefs()
-
-                        val verticalGuideLineStart = createGuidelineFromStart(0.00f)
-                        val verticalGuideLineEnd = createGuidelineFromEnd(0.00f)
-
-                        OutlinedTextField(
-                            value = searchText,
-                            readOnly = true,
-                            onValueChange = { searchText = it },
-                            singleLine = true,
-                            placeholder = {
-                                Text(
-                                    "Search For Products",
-                                    style = MaterialTheme.typography.labelLarge
-                                )
-                            },
-                            leadingIcon = {
-                                Icon(Icons.Filled.Search, contentDescription = "Search")
-                            },
-                            shape = MaterialTheme.shapes.extraLarge,
-                            modifier = Modifier
-                                .constrainAs(searchTextField) {
-                                    top.linkTo(parent.top)
-                                    start.linkTo(verticalGuideLineStart)
-                                    end.linkTo(verticalGuideLineEnd)
-                                    width = Dimension.fillToConstraints
-                                }
-                                .onFocusChanged {
-                                    if (it.isFocused) {
-                                        appNavController.navigate(Routes.SearchScreen.route)
-                                    }
-                                },
-                            textStyle = MaterialTheme.typography.labelLarge,
-                            colors = TextFieldDefaults.colors(
-                                focusedContainerColor = MaterialTheme.colorScheme.surface,
-                                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-                                focusedIndicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
-                                unfocusedIndicatorColor = MaterialTheme.colorScheme.primary.copy(
-                                    alpha = 0.5f
-                                ),
-                                focusedLabelColor = MaterialTheme.colorScheme.primary,
-                                focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                            ),
-                            trailingIcon = {
-                                if (searchText.isNotEmpty()) {
-                                    IconButton(onClick = { searchText = "" }) {
-                                        Icon(
-                                            imageVector = Icons.Outlined.Clear,
-                                            contentDescription = "Clear Text"
-                                        )
-                                    }
-                                }
-                            }
-                        )
-
-                        HorizontalPager(
-                            state = pagerState,
-                            modifier = Modifier
-                                .constrainAs(horizontalSlider) {
-                                    top.linkTo(searchTextField.bottom, margin = 15.dp)
-                                    start.linkTo(verticalGuideLineStart)
-                                    end.linkTo(verticalGuideLineEnd)
-                                    width = Dimension.fillToConstraints
-                                }
-                                .height(180.dp)
-                                .clip(MaterialTheme.shapes.extraLarge),
-                        ) { page ->
-                            when (page) {
-                                0 -> HorizontalPages(Modifier, "Discover Local\n Deals")
-                                1 -> HorizontalPages(Modifier, "Rent Items at\n lower Rates")
-                                2 -> HorizontalPages(Modifier, "Shop Local \nSupport Local.")
-                            }
-                        }
-
-                        Text(
-                            "Browse by Category",
-                            style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.constrainAs(browseByCategoryText) {
-                                top.linkTo(horizontalSlider.bottom, margin = 15.dp)
+                            .constrainAs(searchTextField) {
+                                top.linkTo(parent.top)
                                 start.linkTo(verticalGuideLineStart)
                                 end.linkTo(verticalGuideLineEnd)
                                 width = Dimension.fillToConstraints
-                            })
-
-                        LazyRow(
-                            modifier = Modifier
-                                .constrainAs(lazyRowCategory) {
-                                    top.linkTo(browseByCategoryText.bottom, margin = 15.dp)
-                                    start.linkTo(verticalGuideLineStart)
-                                    end.linkTo(verticalGuideLineEnd)
-                                    width = Dimension.fillToConstraints
-                                },
-                            contentPadding = PaddingValues(horizontal = 6.dp),
-                            horizontalArrangement = Arrangement.spacedBy(16.dp),
-                            content = {
-                                items(25) { item ->
-                                    HorizontalCard(
-                                        modifier = Modifier,
-                                        title = "Tools",
-                                        onClick = {},
-                                        imageRes = R.drawable.test_image3
+                            }
+                            .onFocusChanged {
+                                if (it.isFocused) {
+                                    appNavController.navigate(Routes.SearchScreen.route)
+                                }
+                            },
+                        textStyle = MaterialTheme.typography.labelLarge,
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = MaterialTheme.colorScheme.surface,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                            focusedIndicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+                            unfocusedIndicatorColor = MaterialTheme.colorScheme.primary.copy(
+                                alpha = 0.5f
+                            ),
+                            focusedLabelColor = MaterialTheme.colorScheme.primary,
+                            focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
+                        ),
+                        trailingIcon = {
+                            if (searchText.isNotEmpty()) {
+                                IconButton(onClick = { searchText = "" }) {
+                                    Icon(
+                                        imageVector = Icons.Outlined.Clear,
+                                        contentDescription = "Clear Text"
                                     )
                                 }
-                            })
+                            }
+                        }
+                    )
 
-                        Text(
-                            "Browse by Products",
-                            style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.constrainAs(browseByProductText) {
-                                top.linkTo(lazyRowCategory.bottom, margin = 15.dp)
+                    HorizontalPager(
+                        state = pagerState,
+                        modifier = Modifier
+                            .constrainAs(horizontalSlider) {
+                                top.linkTo(searchTextField.bottom, margin = 15.dp)
                                 start.linkTo(verticalGuideLineStart)
                                 end.linkTo(verticalGuideLineEnd)
                                 width = Dimension.fillToConstraints
-                            })
-                    }
-                }
-                items(chunked) { rowItems ->
-                    Row(
-                        modifier = Modifier.fillMaxWidth()
-                            .padding(vertical = 12.dp)
-                        ,
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    ) {
-                        rowItems.forEach { item ->
-                            VerticalCard(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(horizontal = 4.dp),
-                                imageRes = R.drawable.test_image2,
-                                title = "Product $item",
-                                subtitle = "₹100/day",
-                                onClick = {}
-                            )
-                        }
-                        if (rowItems.size < 2) {
-                            Spacer(modifier = Modifier.weight(1f))
+                            }
+                            .height(180.dp)
+                            .clip(MaterialTheme.shapes.extraLarge),
+                    ) { page ->
+                        when (page) {
+                            0 -> HorizontalPages(Modifier, "Discover Local\n Deals")
+                            1 -> HorizontalPages(Modifier, "Rent Items at\n lower Rates")
+                            2 -> HorizontalPages(Modifier, "Shop Local \nSupport Local.")
                         }
                     }
-                }
 
+                    Text(
+                        "Browse by Category",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.constrainAs(browseByCategoryText) {
+                            top.linkTo(horizontalSlider.bottom, margin = 15.dp)
+                            start.linkTo(verticalGuideLineStart)
+                            end.linkTo(verticalGuideLineEnd)
+                            width = Dimension.fillToConstraints
+                        })
+
+                    LazyRow(
+                        modifier = Modifier
+                            .constrainAs(lazyRowCategory) {
+                                top.linkTo(browseByCategoryText.bottom, margin = 15.dp)
+                                start.linkTo(verticalGuideLineStart)
+                                end.linkTo(verticalGuideLineEnd)
+                                width = Dimension.fillToConstraints
+                            },
+                        contentPadding = PaddingValues(horizontal = 6.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        content = {
+                            items(25) { item ->
+                                HorizontalCard(
+                                    modifier = Modifier,
+                                    title = "Tools",
+                                    onClick = {},
+                                    imageRes = R.drawable.test_image3
+                                )
+                            }
+                        })
+
+                    Text(
+                        "Browse by Products",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.constrainAs(browseByProductText) {
+                            top.linkTo(lazyRowCategory.bottom, margin = 15.dp)
+                            start.linkTo(verticalGuideLineStart)
+                            end.linkTo(verticalGuideLineEnd)
+                            width = Dimension.fillToConstraints
+                        })
+                }
             }
+            items(chunked) { rowItems ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    rowItems.forEach { item ->
+                        VerticalCard(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(horizontal = 4.dp),
+                            imageRes = R.drawable.test_image2,
+                            title = "Product $item",
+                            subtitle = "₹100/day",
+                            onClick = {}
+                        )
+                    }
+                    if (rowItems.size < 2) {
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
+                }
+            }
+
         }
     }
 }
