@@ -6,11 +6,14 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -21,9 +24,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -31,7 +31,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -45,15 +44,8 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 
-//@Preview
-//@Composable
-//private fun PreviewFunction() {
-//    val navController = NavController(LocalContext.current)
-//    WelcomeScreen(navController)
-//}
-
 @Composable
-fun WelcomeScreen(navController: NavController, authViewModel: AuthViewModel) {
+fun WelcomeScreen(appNavController: NavController, authViewModel: AuthViewModel) {
 
     val systemUiController = rememberSystemUiController()
 
@@ -80,12 +72,29 @@ fun WelcomeScreen(navController: NavController, authViewModel: AuthViewModel) {
             val account = task.getResult(ApiException::class.java)
 
             account?.let { account ->
-                authViewModel.signInWithGoogle(account, onResult = { success ->
-                    if (success) {
-                        navController.navigate(Routes.UserDetailsScreen.route)
-                    } else {
-                        Toast.makeText(context, "Failed to login, try again.", Toast.LENGTH_LONG)
-                            .show()
+                authViewModel.signInWithGoogle(account, onResult = { userType ->
+                    authViewModel.isLoading.value = false
+                    when (userType) {
+                        "hasAccount" -> {
+                            appNavController.navigate(Routes.HomeScreen.route) {
+                                popUpTo(
+                                    Routes.WelcomeScreen.route
+                                ) { inclusive = true }
+                            }
+                            Log.d("hmm", "2")
+                        }
+
+                        "doesntHasAccount" -> {
+                            appNavController.navigate(Routes.UserDetailsScreen.route)
+                        }
+
+                        else -> {
+                            Toast.makeText(
+                                context,
+                                "Failed to login, try again.",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                     }
                 })
             }
@@ -179,15 +188,26 @@ fun WelcomeScreen(navController: NavController, authViewModel: AuthViewModel) {
 
                 ) {
                     if (authViewModel.isLoading.value) {
-                        CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+                        CircularProgressIndicator(
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(25.dp)
+                        )
                     } else {
+                        Image(
+                            painter = painterResource(R.drawable.google_icon),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(26.dp)
+                        )
+                        Spacer(Modifier.width(8.dp))
                         Text("Sign In with Google", style = MaterialTheme.typography.bodyLarge)
                     }
                 }
 
                 OutlinedButton(
                     onClick = {
-                        navController.navigate(Routes.HomeScreen.route)
+                        authViewModel.markAsGuest(true)
+                        appNavController.navigate(Routes.HomeScreen.route)
                     },
                     border = BorderStroke(0.dp, Color.Transparent),
                     colors = ButtonDefaults.outlinedButtonColors(
