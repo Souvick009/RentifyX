@@ -24,7 +24,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -38,7 +37,6 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import com.example.rentifyx.R
 import com.example.rentifyx.navigation.Routes
-import com.example.rentifyx.states.AuthState
 import com.example.rentifyx.ui.theme.RentifyXTheme
 import com.example.rentifyx.ui.theme.WelcomeScreenColor
 import com.example.rentifyx.viewmodel.AuthViewModel
@@ -47,7 +45,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 
 @Composable
-fun WelcomeScreen(navController: NavController, authViewModel: AuthViewModel) {
+fun WelcomeScreen(appNavController: NavController, authViewModel: AuthViewModel) {
 
     val systemUiController = rememberSystemUiController()
 
@@ -78,7 +76,7 @@ fun WelcomeScreen(navController: NavController, authViewModel: AuthViewModel) {
                     authViewModel.isLoading.value = false
                     when (userType) {
                         "hasAccount" -> {
-                            navController.navigate(Routes.HomeScreen.route) {
+                            appNavController.navigate(Routes.HomeScreen.route) {
                                 popUpTo(
                                     Routes.WelcomeScreen.route
                                 ) { inclusive = true }
@@ -87,7 +85,7 @@ fun WelcomeScreen(navController: NavController, authViewModel: AuthViewModel) {
                         }
 
                         "doesntHasAccount" -> {
-                            navController.navigate(Routes.UserDetailsScreen.route)
+                            appNavController.navigate(Routes.UserDetailsScreen.route)
                         }
 
                         else -> {
@@ -209,7 +207,7 @@ fun WelcomeScreen(navController: NavController, authViewModel: AuthViewModel) {
                 OutlinedButton(
                     onClick = {
                         authViewModel.markAsGuest(true)
-                        navController.navigate(Routes.HomeScreen.route)
+                        appNavController.navigate(Routes.HomeScreen.route)
                     },
                     border = BorderStroke(0.dp, Color.Transparent),
                     colors = ButtonDefaults.outlinedButtonColors(

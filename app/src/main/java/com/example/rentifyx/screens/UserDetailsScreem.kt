@@ -37,7 +37,7 @@ import com.example.rentifyx.reusablecomposable.PrimaryButton
 import com.example.rentifyx.viewmodel.AuthViewModel
 
 @Composable
-fun UserDetailsScreen(navController: NavHostController, authViewModel: AuthViewModel) {
+fun UserDetailsScreen(appNavController: NavHostController, authViewModel: AuthViewModel) {
     val context = LocalContext.current
     var fullName by rememberSaveable { mutableStateOf(authViewModel.displayName) }
     var fullNameError = remember { mutableStateOf<String?>(null) }
@@ -116,7 +116,7 @@ fun UserDetailsScreen(navController: NavHostController, authViewModel: AuthViewM
                         authViewModel.saveUserDetails(fullName, phoneNumber, onResult = { success ->
                             if (success) {
                                 authViewModel.markAsCompletedProfileAndSignedIn(true)
-                                navController.navigate(Routes.HomeScreen.route) {
+                                appNavController.navigate(Routes.HomeScreen.route) {
                                     popUpTo(Routes.WelcomeScreen.route) { inclusive = true }
                                 }
                             } else {

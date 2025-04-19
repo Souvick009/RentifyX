@@ -1,6 +1,5 @@
 package com.example.rentifyx.screens
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -32,18 +31,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.rentifyx.R
 import com.example.rentifyx.navigation.Routes
 import com.example.rentifyx.reusablecomposable.BaseScreen
@@ -54,19 +50,23 @@ import com.example.rentifyx.ui.theme.RentifyXTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-@Composable
-@Preview(
-    showSystemUi = true,
-    device = Devices.PIXEL_7
-)
+//@Composable
+//@Preview(
+//    showSystemUi = true,
+//    device = Devices.PIXEL_7
+//)
 
-private fun Preview() {
-    HomeScreen(navController = NavController(LocalContext.current))
-}
+//private fun Preview() {
+//    HomeScreen(
+//        appNavController = NavController(LocalContext.current),
+//        bottomNavController = bottomNavController
+//    )
+//}
 
 @Composable
 fun HomeScreen(
-    navController: NavController
+    appNavController: NavController,
+    bottomNavController: NavHostController
 ) {
     var searchText by rememberSaveable { mutableStateOf("") }
     var isFocused by remember { mutableStateOf(false) }
@@ -85,11 +85,6 @@ fun HomeScreen(
         coroutineScope.launch {
             pagerState.animateScrollToPage(nextPage)
         }
-    }
-
-    BackHandler(enabled = isFocused) {
-        focusManager.clearFocus()
-        isFocused = false
     }
 
     RentifyXTheme {
@@ -142,7 +137,7 @@ fun HomeScreen(
                                 }
                                 .onFocusChanged {
                                     if (it.isFocused) {
-                                        navController.navigate(Routes.SearchScreen.route)
+                                        appNavController.navigate(Routes.SearchScreen.route)
                                     }
                                 },
                             textStyle = MaterialTheme.typography.labelLarge,

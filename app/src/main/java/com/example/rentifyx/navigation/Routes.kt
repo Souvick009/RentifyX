@@ -7,6 +7,12 @@ sealed class Routes(val route: String) {
     object UserDetailsScreen : Routes("UserDetailsScreen")
     object SearchScreen : Routes("SearchScreen")
 
+    object MainScreen : Routes("MainScreen")
+    object ListScreen : Routes("ListScreen")
+    object ListItemScreen : Routes("ListItemScreen")
+    object WishListScreen : Routes("WishListScreen")
+    object SettingsScreen : Routes("SettingsScreen")
+
     fun withArgs(vararg args: String): String {
         return buildString {
             append(route)
@@ -14,6 +20,5 @@ sealed class Routes(val route: String) {
                 append("/$arg")
             }
         }
-
     }
 }

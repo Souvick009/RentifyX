@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
-import com.example.rentifyx.navigation.NavController
+import com.example.rentifyx.navigation.AppNavHost
 import com.example.rentifyx.ui.theme.RentifyXTheme
 
 class MainActivity : ComponentActivity() {
@@ -15,7 +15,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             RentifyXTheme {
-                NavController()
+                AppNavHost()
             }
         }
     }

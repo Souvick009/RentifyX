@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonElevation
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -16,10 +17,11 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun PrimaryButton(
-    composables: (@Composable () -> Unit),
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    elevation: ButtonElevation? = null,
+    composables: (@Composable () -> Unit),
 ) {
     Button(
         onClick = onClick,
@@ -28,10 +30,12 @@ fun PrimaryButton(
             .height(52.dp),
         enabled = enabled,
         shape = RoundedCornerShape(30.dp),
+        elevation = elevation
     ) {
         composables()
     }
 }
+
 @Composable
 fun OutlinedAppButton(
     text: String,

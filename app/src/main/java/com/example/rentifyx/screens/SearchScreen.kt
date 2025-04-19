@@ -37,12 +37,12 @@ import com.example.rentifyx.reusablecomposable.BaseScreen
 @Preview
 @Composable
 private fun PreviewFunction() {
-    SearchScreen(navController = NavController(LocalContext.current))
+    SearchScreen(appNavController = NavController(LocalContext.current))
 }
 
 @Composable
 fun SearchScreen(
-    navController: NavController
+    appNavController: NavController
 ) {
     var searchText by rememberSaveable { mutableStateOf("") }
     var isFocused by remember { mutableStateOf(false) }
@@ -73,7 +73,7 @@ fun SearchScreen(
                 },
                 leadingIcon = {
                     IconButton(onClick = {
-                        navController.popBackStack()
+                        appNavController.popBackStack()
                     }) {
                         Icon(Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = "Search")
                     }
