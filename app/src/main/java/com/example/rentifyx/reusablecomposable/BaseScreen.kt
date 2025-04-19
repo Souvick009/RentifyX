@@ -58,16 +58,12 @@ fun BaseScreen(
                     )
                 }
             },
-            modifier = modifier
-                .fillMaxSize()
-                .imePadding(),
+            modifier = modifier.fillMaxSize(),
             containerColor = backgroundColorForSurface ?: MaterialTheme.colorScheme.background
         ) {
             content(it)
         }
     }
-
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -113,7 +109,5 @@ fun CustomToolbar(
                 color = dividerColor
             )
         }
-
     }
-
 }
