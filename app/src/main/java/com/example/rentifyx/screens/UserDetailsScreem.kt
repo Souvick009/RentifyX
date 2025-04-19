@@ -48,7 +48,7 @@ fun UserDetailsScreen(appNavController: NavHostController, authViewModel: AuthVi
     BaseScreen(
         modifier = Modifier,
         isAppBarNeeded = false,
-        dividerColor = null
+        showDivider = false
     ) {
         Column(
             modifier = Modifier
