@@ -207,7 +207,7 @@ fun WelcomeScreen(appNavController: NavController, authViewModel: AuthViewModel)
                 OutlinedButton(
                     onClick = {
                         authViewModel.markAsGuest(true)
-                        appNavController.navigate(Routes.HomeScreen.route)
+                        appNavController.navigate(Routes.MainScreen.route)
                     },
                     border = BorderStroke(0.dp, Color.Transparent),
                     colors = ButtonDefaults.outlinedButtonColors(

@@ -1,8 +1,8 @@
 package com.example.rentifyx.screens
 
 import android.Manifest
+import android.app.Application
 import android.content.pm.PackageManager
-import android.graphics.Paint
 import android.net.Uri
 import android.os.Build
 import android.util.Log
@@ -11,30 +11,31 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -59,19 +60,22 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.rentifyx.reusablecomposable.BaseScreen
 import com.example.rentifyx.reusablecomposable.CustomInputField
 import com.example.rentifyx.reusablecomposable.PrimaryButton
+import com.example.rentifyx.viewmodel.ListItemViewModel
+import java.io.File
 
 @Composable
 fun ListItemScreen(bottomNavController: NavHostController) {
 
     val context = LocalContext.current
+    val viewModel = ListItemViewModel(LocalContext.current.applicationContext as Application)
 
     var productName by remember { mutableStateOf("") }
     var address by remember { mutableStateOf("") }
     var pinCode by remember { mutableStateOf("") }
     var contactNumber by remember { mutableStateOf("") }
     var pricePerDay by remember { mutableStateOf("") }
-
-    var imageUriList by remember { mutableStateOf<List<Uri>>(listOf()) }
+    var loadingImages by remember { mutableStateOf(false) }
+    var compressedImageFileList by remember { mutableStateOf<List<File>>(listOf()) }
 
     var currentImageIndex by remember { mutableIntStateOf(0) }
 
@@ -94,16 +98,25 @@ fun ListItemScreen(bottomNavController: NavHostController) {
                     Toast.LENGTH_LONG
                 ).show()
             } else if (listOfUris.isNotEmpty()) {
-                imageUriList = listOfUris
-                currentImageIndex = 0
+                loadingImages = true
+                viewModel.compressImages(context, listOfUris) { listOfFile ->
+                    loadingImages = false
+                    compressedImageFileList = listOfFile
+                    currentImageIndex = 0
+                }
             }
         })
 
     val singleImagePickupLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(), onResult = { uri ->
             uri?.let {
-                imageUriList =
-                    imageUriList.toMutableList().also { list -> list[currentImageIndex] = uri }
+                viewModel.compressImages(context, listOf(uri)) { listOfFile ->
+                    if (listOfFile.isNotEmpty()) {
+                        compressedImageFileList =
+                            compressedImageFileList.toMutableList()
+                                .also { list -> list[currentImageIndex] = listOfFile[0] }
+                    }
+                }
             }
         })
 
@@ -120,16 +133,24 @@ fun ListItemScreen(bottomNavController: NavHostController) {
             }
         })
 
+    val scrollState = rememberScrollState()
+
     BaseScreen(
         toolbarTitleText = "List Item", isAppBarNeeded = true, dividerColor = Color.Transparent
     ) {
-        Column(modifier = Modifier.padding(it)) {
+        Column(
+            modifier = Modifier
+                .padding(it)
+                .verticalScroll(scrollState)
+                .imePadding(),
+            verticalArrangement = Arrangement.spacedBy(20.dp)
+        ) {
 
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(250.dp)
-                    .padding(horizontal = 20.dp, vertical = 10.dp)
+                    .padding(horizontal = 20.dp)
                     .clip(RoundedCornerShape(20))
                     .background(Color.White)
                     .clickable {
@@ -144,7 +165,7 @@ fun ListItemScreen(bottomNavController: NavHostController) {
                         }
                     }, contentAlignment = Alignment.Center
             ) {
-                if (imageUriList.isEmpty()) {
+                if (compressedImageFileList.isEmpty() && loadingImages == false) {
                     Text(
                         "Select product images",
                         color = Color.Gray,
@@ -152,9 +173,15 @@ fun ListItemScreen(bottomNavController: NavHostController) {
                         fontStyle = FontStyle.Italic,
                         textAlign = TextAlign.Center,
                     )
+                } else if (loadingImages) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(25.dp),
+                        color = MaterialTheme.colorScheme.primary
+                    )
                 } else {
+                    Log.d("compress", "Loading Images")
                     Image(
-                        painter = rememberAsyncImagePainter(model = imageUriList[currentImageIndex]),
+                        painter = rememberAsyncImagePainter(model = compressedImageFileList[currentImageIndex]),
                         contentDescription = "product_image",
                         modifier = Modifier
                             .fillMaxSize()
@@ -184,7 +211,7 @@ fun ListItemScreen(bottomNavController: NavHostController) {
                     }
                 }
 
-                if (currentImageIndex < (imageUriList.size - 1)) {
+                if (currentImageIndex < (compressedImageFileList.size - 1)) {
                     Box(
                         modifier = Modifier
                             .fillMaxHeight()
@@ -210,7 +237,7 @@ fun ListItemScreen(bottomNavController: NavHostController) {
                         .align(Alignment.BottomCenter)
                         .padding(bottom = 10.dp)
                 ) {
-                    imageUriList.forEachIndexed { index, _ ->
+                    compressedImageFileList.forEachIndexed { index, _ ->
                         Box(
                             modifier = Modifier
                                 .padding(horizontal = 3.dp)
@@ -276,6 +303,7 @@ fun ListItemScreen(bottomNavController: NavHostController) {
                 )
             }
 
+            Spacer(modifier = Modifier.height(50.dp))
         }
     }
 }
