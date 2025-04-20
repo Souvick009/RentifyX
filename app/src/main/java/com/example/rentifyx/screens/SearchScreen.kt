@@ -24,7 +24,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -32,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.rentifyx.reusablecomposable.BaseScreen
+import com.example.rentifyx.ui.theme.GradientSkyBlue
 
 @Preview(showSystemUi = true)
 @Preview
@@ -80,10 +80,10 @@ fun SearchScreen(
                 },
                 shape = RectangleShape,
                 colors = TextFieldDefaults.colors(
-                    focusedContainerColor = MaterialTheme.colorScheme.background,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.background,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedContainerColor = GradientSkyBlue,
+                    unfocusedContainerColor = GradientSkyBlue,
+                    focusedIndicatorColor = GradientSkyBlue,
+                    unfocusedIndicatorColor = GradientSkyBlue,
                     focusedLabelColor = MaterialTheme.colorScheme.primary,
                 ),
                 trailingIcon = {
@@ -103,8 +103,8 @@ fun SearchScreen(
             )
             HorizontalDivider(
                 thickness = 1.dp,
-            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f)
-                )
+                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f)
+            )
         }
     }
 }

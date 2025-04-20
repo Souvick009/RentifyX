@@ -230,5 +230,3 @@ fun WelcomeScreen(appNavController: NavController, authViewModel: AuthViewModel)
     }
 }
 
-
-

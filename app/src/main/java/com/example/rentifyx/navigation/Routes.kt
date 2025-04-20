@@ -12,7 +12,7 @@ sealed class Routes(val route: String) {
     object ListItemScreen : Routes("ListItemScreen")
     object WishListScreen : Routes("WishListScreen")
     object SettingsScreen : Routes("SettingsScreen")
-
+    object ProductDescriptionScreen : Routes("ProductDescriptionScreen")
     fun withArgs(vararg args: String): String {
         return buildString {
             append(route)

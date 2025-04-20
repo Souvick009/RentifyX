@@ -1,5 +1,7 @@
 package com.example.rentifyx.reusablecomposable
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,26 +20,29 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import com.example.rentifyx.ui.theme.GradientAlabaster
+import com.example.rentifyx.ui.theme.GradientMintCream
+import com.example.rentifyx.ui.theme.GradientSkyBlue
 import com.example.rentifyx.ui.theme.RentifyXTheme
-import com.example.rentifyx.ui.theme.backgroundColor
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun BaseScreen(
     modifier: Modifier = Modifier,
-    toolbarTitleText: String = "",
+    appBarTitle: String = "",
     navigationIcon: ImageVector? = null,
     navigationOnClick: (() -> Unit)? = null,
     isAppBarNeeded: Boolean,
     showDivider: Boolean = false,
-    backgroundColorForSurface: Color? = null,
+    gradientBrush: Brush? = null,
     dividerColor: Color = MaterialTheme.colorScheme.primary.copy(alpha = 1f),
     bottomAppBar: @Composable () -> Unit = {},
-    statusBarColor: Color = backgroundColor,
-    navigationBarColor: Color = backgroundColor,
+    statusBarColor: Color = GradientSkyBlue,
+    navigationBarColor: Color = GradientAlabaster,
     content: @Composable (PaddingValues) -> Unit,
 ) {
     val systemUiController = rememberSystemUiController()
@@ -52,25 +57,37 @@ fun BaseScreen(
     }
 
     RentifyXTheme {
-        Scaffold(
-            topBar = {
-                if (isAppBarNeeded) {
-                    CustomToolbar(
-                        titleText = toolbarTitleText,
-                        navigationIcon = navigationIcon,
-                        navigationOnClick = navigationOnClick,
-                        showDivider = showDivider,
-                        dividerColor = dividerColor
-                    )
-                }
-            },
+        Box(
             modifier = modifier
                 .fillMaxSize()
-                .imePadding(),
-            containerColor = backgroundColorForSurface ?: MaterialTheme.colorScheme.background,
-            bottomBar = bottomAppBar
+                .background(
+                    brush = gradientBrush ?: Brush.verticalGradient(
+                        colors = listOf(
+                            GradientSkyBlue, GradientMintCream, GradientAlabaster
+                        )
+                    )
+                )
         ) {
-            content(it)
+            Scaffold(
+                topBar = {
+                    if (isAppBarNeeded) {
+                        CustomToolbar(
+                            titleText = appBarTitle,
+                            navigationIcon = navigationIcon,
+                            navigationOnClick = navigationOnClick,
+                            showDivider = showDivider,
+                            dividerColor = dividerColor
+                        )
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxSize()
+                    .imePadding(),
+                containerColor = Color.Transparent,
+                bottomBar = bottomAppBar
+            ) {
+                content(it)
+            }
         }
     }
 }
@@ -112,8 +129,7 @@ fun CustomToolbar(
             )
             if (showDivider) {
                 HorizontalDivider(
-                    thickness = 1.dp,
-                    color = dividerColor
+                    thickness = 1.dp, color = dividerColor
                 )
             }
         }

@@ -136,7 +136,7 @@ fun ListItemScreen(bottomNavController: NavHostController) {
         modifier = Modifier
             .verticalScroll(scrollState)
             .imePadding(),
-        verticalArrangement = Arrangement.spacedBy(20.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
 
         Box(

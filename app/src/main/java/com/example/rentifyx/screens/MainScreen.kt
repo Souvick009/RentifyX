@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AddCircle
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Settings
@@ -36,7 +36,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.rentifyx.navigation.Routes
 import com.example.rentifyx.reusablecomposable.BaseScreen
-import com.example.rentifyx.ui.theme.backgroundColor
+import com.example.rentifyx.ui.theme.GradientSkyBlue
 
 @Composable
 fun MainScreen(navController: NavHostController) {
@@ -46,7 +46,7 @@ fun MainScreen(navController: NavHostController) {
     val items = listOf(
         Triple(Routes.HomeScreen.route, Icons.Outlined.Home, "Home"),
         Triple(Routes.ListScreen.route, Icons.Outlined.Menu, "Listings"),
-        Triple(Routes.ListItemScreen.route, Icons.Outlined.AddCircle, "List"),
+        Triple(Routes.ListItemScreen.route, Icons.Outlined.Add, "List"),
         Triple(Routes.WishListScreen.route, Icons.Outlined.ShoppingCart, "Saved"),
         Triple(Routes.SettingsScreen.route, Icons.Outlined.Settings, "Settings")
     )
@@ -62,12 +62,12 @@ fun MainScreen(navController: NavHostController) {
 
     BaseScreen(
         isAppBarNeeded = true,
-        toolbarTitleText = title,
+        appBarTitle = title,
         bottomAppBar = {
             BottomNavigationBar(items, bottomNavController)
         },
         showDivider = false,
-        statusBarColor = backgroundColor,
+        statusBarColor = GradientSkyBlue,
         navigationBarColor = Color.White
     ) { innerPadding ->
         NavHost(
