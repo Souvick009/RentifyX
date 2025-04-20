@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 
 private val LightColorScheme = lightColorScheme(
     primary = WelcomeScreenColor,
-    background = backgroundColor,
     secondaryContainer = appBarDividerColor,
     surface = surfaceColor
 )

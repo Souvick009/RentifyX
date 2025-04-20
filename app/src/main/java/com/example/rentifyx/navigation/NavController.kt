@@ -10,10 +10,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.rentifyx.repository.AuthRepository
-import com.example.rentifyx.screens.SplashScreen
-import com.example.rentifyx.screens.HomeScreen
 import com.example.rentifyx.screens.MainScreen
+import com.example.rentifyx.screens.ProductDescriptionScreen
 import com.example.rentifyx.screens.SearchScreen
+import com.example.rentifyx.screens.SplashScreen
 import com.example.rentifyx.screens.UserDetailsScreen
 import com.example.rentifyx.screens.WelcomeScreen
 import com.example.rentifyx.viewmodel.AuthViewModel
@@ -54,6 +54,9 @@ fun AppNavHost() {
         }
         composable(route = Routes.SearchScreen.route) {
             SearchScreen(navController)
+        }
+        composable(route = Routes.ProductDescriptionScreen.route) {
+            ProductDescriptionScreen()
         }
     }
 }

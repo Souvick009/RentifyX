@@ -162,7 +162,7 @@ fun HomeScreen(
 
                     Text(
                         "Browse by Category",
-                        style = MaterialTheme.typography.bodyLarge,
+                        style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.constrainAs(browseByCategoryText) {
                             top.linkTo(horizontalSlider.bottom, margin = 15.dp)
                             start.linkTo(verticalGuideLineStart)
@@ -193,7 +193,7 @@ fun HomeScreen(
 
                     Text(
                         "Browse by Products",
-                        style = MaterialTheme.typography.bodyLarge,
+                        style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.constrainAs(browseByProductText) {
                             top.linkTo(lazyRowCategory.bottom, margin = 15.dp)
                             start.linkTo(verticalGuideLineStart)
@@ -212,12 +212,13 @@ fun HomeScreen(
                     rowItems.forEach { item ->
                         VerticalCard(
                             modifier = Modifier
-                                .weight(1f)
                                 .padding(horizontal = 4.dp),
                             imageRes = R.drawable.test_image2,
                             title = "Product $item",
                             subtitle = "₹100/day",
-                            onClick = {}
+                            onClick = {
+                                appNavController.navigate(Routes.ProductDescriptionScreen.route)
+                            }
                         )
                     }
                     if (rowItems.size < 2) {

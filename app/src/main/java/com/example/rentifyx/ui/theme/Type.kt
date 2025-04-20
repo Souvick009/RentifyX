@@ -12,11 +12,12 @@ val MontserratExtraBold = FontFamily(
     Font(R.font.montserrat_black, FontWeight.Bold)
 )
 val MontserratNormal = FontFamily(
-    Font(R.font.montserrat_light, FontWeight.Normal)
+    Font(R.font.montserrat_regular, FontWeight.Normal)
 )
 val MontserratMedium = FontFamily(
     Font(R.font.montserrat_bold, FontWeight.Medium)
 )
+
 val Typography = Typography(
     bodyLarge = TextStyle(
         fontFamily = MontserratExtraBold,
@@ -25,7 +26,7 @@ val Typography = Typography(
         lineHeight = 24.sp,
         letterSpacing = 0.7.sp
     ),
-    titleLarge = TextStyle( //big headings
+    titleLarge = TextStyle(
         fontFamily = MontserratExtraBold,
         fontWeight = FontWeight.Bold,
         fontSize = 32.sp,
